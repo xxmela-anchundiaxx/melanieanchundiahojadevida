@@ -1,0 +1,49 @@
+<section class="mb-5">
+    <div class="card border-0 shadow-lg">
+        <div class="card-body text-center py-5">
+            <!-- Foto de perfil en círculo perfecto -->
+            <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                {% load archivo_filters %}
+                {% if perfil.foto_perfil and perfil.foto_perfil.name %}
+                    {% with filename=perfil.foto_perfil.name|basename %}
+                    <img src="/foto/{{ filename }}/" 
+                         class="rounded-circle" 
+                         width="200" 
+                         height="200" 
+                         alt="Foto perfil de {{ perfil.nombres }}"
+                         style="object-fit: cover; border: 4px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.2); background-color: #f0f0f0;"
+                         loading="eager">
+                    {% endwith %}
+                {% else %}
+                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
+                         style="width: 200px; height: 200px; border: 4px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <span style="font-size: 80px;">👤</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <h1 class="mb-2">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+
+            {% if perfil.descripcionperfil %}
+                <p class="text-muted fs-5">{{ perfil.descripcionperfil }}</p>
+            {% endif %}
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    {% if perfil.numerocedula %}<p><strong>🆔 Cédula:</strong> {{ perfil.numerocedula }}</p>{% endif %}
+                    {% if perfil.nacionalidad %}<p><strong>🌍 Nacionalidad:</strong> {{ perfil.nacionalidad }}</p>{% endif %}
+                    {% if perfil.lugarnacimiento %}<p><strong>📍 Lugar de Nacimiento:</strong> {{ perfil.lugarnacimiento }}</p>{% endif %}
+                    {% if perfil.fechanacimiento %}<p><strong>📅 Fecha de Nacimiento:</strong> {{ perfil.fechanacimiento|date:"d/m/Y" }}</p>{% endif %}
+                    {% if perfil.sexo %}<p><strong>⚧️ Sexo:</strong> {% if perfil.sexo == 'M' %}Mujer{% else %}Hombre{% endif %}</p>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if perfil.estadocivil %}<p><strong>💍 Estado Civil:</strong> {{ perfil.estadocivil }}</p>{% endif %}
+                    {% if perfil.telefonofijo %}<p><strong>📱 Teléfono:</strong> {{ perfil.telefonofijo }}</p>{% endif %}
+                    {% if perfil.telefonoconvencional %}<p><strong>☎️ Teléfono Convencional:</strong> {{ perfil.telefonoconvencional }}</p>{% endif %}
+                    {% if perfil.direcciondomiciliaria %}<p><strong>🏠 Dirección:</strong> {{ perfil.direcciondomiciliaria }}</p>{% endif %}
+                    {% if perfil.sitioweb %}<p><strong>🌐 Sitio Web:</strong> <a href="{{ perfil.sitioweb }}" target="_blank">{{ perfil.sitioweb }}</a></p>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

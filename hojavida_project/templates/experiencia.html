@@ -1,0 +1,38 @@
+{% if perfil.mostrar_experiencia %}
+<section class="mb-5">
+    <div class="card border-0 shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">💼 Experiencia Laboral</h3>
+        </div>
+        <div class="card-body">
+            {% for exp in perfil.experiencias.all %}
+                {% if exp.activarparaqueseveaenfront %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h5 class="text-primary">{{ exp.cargodesempenado }}</h5>
+                        <p class="text-muted mb-2"><strong>{{ exp.nombrempresa }}</strong></p>
+                        <small class="text-muted">
+                            📅 {{ exp.fechainiciogestion|date:"M Y" }} -
+                            {% if exp.fechafingestion %}{{ exp.fechafingestion|date:"M Y" }}{% else %}<em>Actual</em>{% endif %}
+                        </small>
+                        {% if exp.descripcionfunciones %}
+                            <p class="mt-2">{{ exp.descripcionfunciones }}</p>
+                        {% endif %}
+                        {% load archivo_filters %}
+                        {% if exp.rutacertificado %}
+                            {% with filename=exp.rutacertificado.name|basename %}
+                            <p class="mt-2">
+                                <a href="/imagen/certificados/experiencia/{{ filename }}/" class="btn btn-sm btn-primary" target="_blank">
+                                    📄 Ver Certificado
+                                </a>
+                            </p>
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% empty %}
+                <p class="text-muted">No hay experiencia registrada aún.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

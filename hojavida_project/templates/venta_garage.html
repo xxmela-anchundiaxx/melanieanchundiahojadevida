@@ -1,0 +1,39 @@
+{% if perfil.mostrar_venta_garage %}
+<section class="mb-5">
+    <div class="card border-0 shadow">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">🏪 Venta Garage</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% load archivo_filters %}
+                {% for v in perfil.ventas_garage.all %}
+                    {% if v.activarparaqueseveaenfront %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                {% if v.imagen_producto %}
+                                    {% with filename=v.imagen_producto.name|basename %}
+                                    <img src="/imagen/ventas_garage/{{ filename }}/" class="card-img-top" alt="{{ v.nombreproducto }}" style="height: 250px; object-fit: cover;">
+                                    {% endwith %}
+                                {% else %}
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                                        <span style="font-size: 60px;">📦</span>
+                                    </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ v.nombreproducto }}</h5>
+                                    <p class="card-text text-muted">{{ v.descripcion }}</p>
+                                    <p class="text-success"><strong>${{ v.valordelbien }}</strong></p>
+                                    <span class="badge bg-danger">{{ v.estadoproducto }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <p class="text-muted">No hay productos en venta aún.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

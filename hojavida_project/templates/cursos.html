@@ -1,0 +1,39 @@
+{% if perfil.mostrar_cursos %}
+<section class="mb-5">
+    <div class="card border-0 shadow">
+        <div class="card-header bg-info text-white">
+            <h3 class="mb-0">🎓 Cursos y Capacitaciones</h3>
+        </div>
+        <div class="card-body">
+            {% for curso in perfil.cursos.all %}
+                {% if curso.activarparaqueseveaenfront %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h5 class="text-info">{{ curso.nombrecurso }}</h5>
+                        <p class="text-muted mb-2"><strong>{{ curso.entidadpatrocinadora }}</strong></p>
+                        <small class="text-muted">
+                            📅 {{ curso.fechainicio|date:"M Y" }} -
+                            {% if curso.fechafin %}{{ curso.fechafin|date:"M Y" }}{% else %}<em>En curso</em>{% endif %}
+                            {% if curso.totalhoras %} | ⏱️ {{ curso.totalhoras }} horas{% endif %}
+                        </small>
+                        {% if curso.descripcioncurso %}
+                            <p class="mt-2">{{ curso.descripcioncurso }}</p>
+                        {% endif %}
+                        {% load archivo_filters %}
+                        {% if curso.rutacertificado %}
+                            {% with filename=curso.rutacertificado.name|basename %}
+                            <p class="mt-2">
+                                <a href="/imagen/certificados/cursos/{{ filename }}/" class="btn btn-sm btn-info" target="_blank">
+                                    📄 Ver Certificado
+                                </a>
+                            </p>
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% empty %}
+                <p class="text-muted">No hay cursos registrados aún.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

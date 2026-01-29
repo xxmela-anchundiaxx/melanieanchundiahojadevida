@@ -1,0 +1,31 @@
+{% if perfil.mostrar_reconocimientos %}
+<section class="mb-5">
+    <div class="card border-0 shadow">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">🏆 Reconocimientos y Premios</h3>
+        </div>
+        <div class="card-body">
+            {% for rec in perfil.reconocimientos.all %}
+                {% if rec.activarparaqueseveaenfront %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h5 class="text-warning">{{ rec.descripcionreconocimiento }}</h5>
+                        <p class="text-muted mb-2"><strong>{{ rec.entidadpatrocinadora }}</strong></p>
+                        <small class="text-muted">📅 {{ rec.fechareconocimiento|date:"d/m/Y" }}</small>
+                        <p class="mt-2"><em>Tipo: {{ rec.tiporeconocimiento }}</em></p>
+                        {% load archivo_filters %}
+                        {% if rec.rutacertificado %}
+                            {% with filename=rec.rutacertificado.name|basename %}
+                            <p class="mt-2">
+                                <a href="/imagen/certificados/reconocimientos/{{ filename }}/" class="btn btn-sm btn-warning" target="_blank">
+                                    📄 Ver Certificado
+                                </a>
+                            </p>
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

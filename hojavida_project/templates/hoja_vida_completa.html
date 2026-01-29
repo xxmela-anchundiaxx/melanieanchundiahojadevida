@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Hoja de Vida{% endblock %}
+
+{% block content %}
+    <!-- Botón de descarga PDF -->
+    <div class="text-center mb-4">
+        <a href="{% url 'descargar_pdf' %}" class="btn btn-primary btn-lg">
+            📥 Descargar Hoja de Vida (PDF)
+        </a>
+    </div>
+    
+    {% include "perfil.html" %}
+    {% include "experiencia.html" %}
+    {% include "reconocimientos.html" %}
+    {% include "cursos.html" %}
+    {% include "productos_academicos.html" %}
+    {% include "productos_laborales.html" %}
+    {% include "venta_garage.html" %}
+{% endblock %}

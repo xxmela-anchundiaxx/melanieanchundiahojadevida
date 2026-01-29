@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Vida - {{ perfil.nombres }} {{ perfil.apellidos }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-item {
+            margin-bottom: 10px;
+        }
+        
+        .info-item strong {
+            color: #667eea;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #667eea;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 3px;
+        }
+        
+        .item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .item-subtitle {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .item-date {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .item-description {
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .empty-message {
+            color: #999;
+            font-style: italic;
+            font-size: 13px;
+        }
+        
+        .footer {
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 40px;
+            color: #999;
+            font-size: 11px;
+        }
+        
+        page-break-after: always;
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ENCABEZADO -->
+        <div class="header">
+            <h1>{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+            <p>{{ perfil.descripcionperfil }}</p>
+        </div>
+        
+        <!-- INFORMACIÓN PERSONAL -->
+        <div class="info-grid">
+            {% if perfil.numerocedula %}<div class="info-item"><strong>Cédula:</strong> {{ perfil.numerocedula }}</div>{% endif %}
+            {% if perfil.nacionalidad %}<div class="info-item"><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</div>{% endif %}
+            {% if perfil.lugarnacimiento %}<div class="info-item"><strong>Lugar de Nacimiento:</strong> {{ perfil.lugarnacimiento }}</div>{% endif %}
+            {% if perfil.fechanacimiento %}<div class="info-item"><strong>Fecha de Nacimiento:</strong> {{ perfil.fechanacimiento|date:"d/m/Y" }}</div>{% endif %}
+            {% if perfil.sexo %}<div class="info-item"><strong>Sexo:</strong> {% if perfil.sexo == 'M' %}Mujer{% else %}Hombre{% endif %}</div>{% endif %}
+            {% if perfil.estadocivil %}<div class="info-item"><strong>Estado Civil:</strong> {{ perfil.estadocivil }}</div>{% endif %}
+            {% if perfil.telefonofijo %}<div class="info-item"><strong>Teléfono:</strong> {{ perfil.telefonofijo }}</div>{% endif %}
+            {% if perfil.direcciondomiciliaria %}<div class="info-item"><strong>Dirección:</strong> {{ perfil.direcciondomiciliaria }}</div>{% endif %}
+        </div>
+        
+        <!-- EXPERIENCIA LABORAL -->
+        {% if perfil.mostrar_experiencia %}
+        <div class="section">
+            <div class="section-title">EXPERIENCIA LABORAL</div>
+            {% if perfil.experiencias.all %}
+                {% for exp in perfil.experiencias.all %}
+                    {% if exp.activarparaqueseveaenfront %}
+                    <div class="item">
+                        <div class="item-title">{{ exp.cargodesempenado }}</div>
+                        <div class="item-subtitle">{{ exp.nombrempresa }}{% if exp.lugarempresa %} - {{ exp.lugarempresa }}{% endif %}</div>
+                        <div class="item-date">{{ exp.fechainiciogestion|date:"m/Y" }}{% if exp.fechafingestion %} - {{ exp.fechafingestion|date:"m/Y" }}{% else %} - Actualidad{% endif %}</div>
+                        {% if exp.descripcionfunciones %}<div class="item-description">{{ exp.descripcionfunciones }}</div>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">No hay experiencia registrada.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- CURSOS Y CAPACITACIONES -->
+        {% if perfil.mostrar_cursos %}
+        <div class="section">
+            <div class="section-title">CURSOS Y CAPACITACIONES</div>
+            {% if perfil.cursos.all %}
+                {% for curso in perfil.cursos.all %}
+                    {% if curso.activarparaqueseveaenfront %}
+                    <div class="item">
+                        <div class="item-title">{{ curso.nombrecurso }}</div>
+                        <div class="item-subtitle">{{ curso.entidadpatrocinadora }}</div>
+                        <div class="item-date">{{ curso.fechainicio|date:"m/Y" }}{% if curso.fechafin %} - {{ curso.fechafin|date:"m/Y" }}{% endif %} • {{ curso.totalhoras }} horas</div>
+                        {% if curso.descripcioncurso %}<div class="item-description">{{ curso.descripcioncurso }}</div>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">No hay cursos registrados.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- RECONOCIMIENTOS -->
+        {% if perfil.mostrar_reconocimientos %}
+        <div class="section">
+            <div class="section-title">RECONOCIMIENTOS Y PREMIOS</div>
+            {% if perfil.reconocimientos.all %}
+                {% for rec in perfil.reconocimientos.all %}
+                    {% if rec.activarparaqueseveaenfront %}
+                    <div class="item">
+                        <div class="item-title">{{ rec.descripcionreconocimiento }}</div>
+                        <div class="item-subtitle">{{ rec.tiporeconocimiento }}</div>
+                        <div class="item-date">{{ rec.fechareconocimiento|date:"d/m/Y" }}</div>
+                        {% if rec.entidadpatrocinadora %}<div class="item-description"><strong>Otorgado por:</strong> {{ rec.entidadpatrocinadora }}</div>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">No hay reconocimientos registrados.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- PRODUCTOS ACADÉMICOS -->
+        {% if perfil.mostrar_productos_academicos %}
+        <div class="section">
+            <div class="section-title">PRODUCTOS ACADÉMICOS</div>
+            {% if perfil.productos_academicos.all %}
+                {% for prod in perfil.productos_academicos.all %}
+                    {% if prod.activarparaqueseveaenfront %}
+                    <div class="item">
+                        <div class="item-title">{{ prod.nombrerecurso }}</div>
+                        <div class="item-subtitle">{{ prod.clasificador }}</div>
+                        {% if prod.descripcion %}<div class="item-description">{{ prod.descripcion }}</div>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">No hay productos académicos registrados.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- PRODUCTOS LABORALES -->
+        {% if perfil.mostrar_productos_laborales %}
+        <div class="section">
+            <div class="section-title">PRODUCTOS LABORALES</div>
+            {% if perfil.productos_laborales.all %}
+                {% for prod in perfil.productos_laborales.all %}
+                    {% if prod.activarparaqueseveaenfront %}
+                    <div class="item">
+                        <div class="item-title">{{ prod.nombreproducto }}</div>
+                        <div class="item-date">{{ prod.fechaproducto|date:"d/m/Y" }}</div>
+                        {% if prod.descripcion %}<div class="item-description">{{ prod.descripcion }}</div>{% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-message">No hay productos laborales registrados.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Hoja de vida generada el {% now "d/m/Y" %}</p>
+        </div>
+    </div>
+</body>
+</html>

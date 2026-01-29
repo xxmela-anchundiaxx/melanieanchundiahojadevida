@@ -1,0 +1,27 @@
+{% if perfil.mostrar_productos_laborales %}
+<section class="mb-5">
+    <div class="card border-0 shadow">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">💼 Productos Laborales</h3>
+        </div>
+        <div class="card-body">
+            {% for prod in perfil.productos_laborales.all %}
+                {% if prod.activarparaqueseveaenfront %}
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h5 class="text-dark">{{ prod.nombreproducto }}</h5>
+                        <small class="text-muted">📅 {{ prod.fechaproducto|date:"d/m/Y" }}</small>
+                        {% if prod.descripcion %}
+                            <p class="mt-2">{{ prod.descripcion }}</p>
+                        {% endif %}
+                        {% if prod.link %}
+                            <p><a href="{{ prod.link }}" target="_blank" class="btn btn-sm btn-dark">Ver enlace</a></p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% empty %}
+                <p class="text-muted">No hay productos laborales registrados aún.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
