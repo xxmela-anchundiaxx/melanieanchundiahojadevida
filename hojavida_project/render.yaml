@@ -19,7 +19,7 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: "*"    # Reemplazar por tu dominio render (recomendado)
+        value: "melanieanchundiahojadevida.onrender.com"    # dominio del servicio en Render
       - key: CLOUDINARY_URL
         value: ""    # Opcional: cloudinary://API_KEY:API_SECRET@CLOUD_NAME
 

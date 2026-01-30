@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-uoilrv5vx0b3(rpn3j%3e
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # Set to False in production
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'melanieanchundiahojadevida.onrender.com').split(',')
 
 
 # ============================
