@@ -9,6 +9,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import dj_database_url
 
 # ============================
 # BASE DIR
@@ -19,11 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ============================
 # SECURITY
 # ============================
-SECRET_KEY = 'django-insecure-uoilrv5vx0b3(rpn3j%3e1u=rzbvi@b&7h_g+xk^l&yyx+*!x_'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-uoilrv5vx0b3(rpn3j%3e1u=rzbvi@b&7h_g+xk^l&yyx+*!x_')
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # Set to False in production
 
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
 # ============================
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
 # ============================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,10 +94,7 @@ TEMPLATES = [
 # DATABASE
 # ============================
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
 }
 
 
@@ -126,6 +125,9 @@ USE_TZ = True
 # ============================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+# Use WhiteNoise to serve static files on Render
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -154,12 +156,12 @@ cloudinary.config(
     secure = True
 )
 
-# Usar almacenamiento local por defecto
-# Para producción, descomenta la línea siguiente después de configurar Cloudinary
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Almacenamiento local para desarrollo
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# Usar Cloudinary en producción si se proporciona CLOUDINARY_URL
+if os.environ.get('CLOUDINARY_URL'):
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    # Almacenamiento local para desarrollo
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 
 # ============================
