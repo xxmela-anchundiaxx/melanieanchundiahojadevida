@@ -24,7 +24,7 @@ services:
       - key: CLOUDINARY_URL
         value: ""    # Opcional: cloudinary://API_KEY:API_SECRET@CLOUD_NAME
       - key: AUTO_MIGRATE_ON_STARTUP
-        value: "0"    # Set to "1" in Render dashboard to run migrations at process startup (opt-in)
+        value: "1"    # TEMPORAL: habilitado para aplicar migraciones en el próximo deploy
 
 # Crear una base de datos PostgreSQL gestionada por Render
 databases:
