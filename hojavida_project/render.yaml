@@ -9,7 +9,8 @@ services:
     region: virginia
     branch: principal
     plan: starter
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: python manage.py migrate --noinput
     startCommand: gunicorn hojavida_project.wsgi:application --bind 0.0.0.0:$PORT
     autoDeploy: true
     healthCheckPath: /
