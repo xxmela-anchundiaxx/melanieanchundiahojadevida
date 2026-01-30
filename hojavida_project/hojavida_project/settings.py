@@ -93,8 +93,14 @@ TEMPLATES = [
 # ============================
 # DATABASE
 # ============================
+# Usa la variable de entorno DATABASE_URL si está definida, si no usa la URL de PostgreSQL proporcionada, y si no, SQLite local
 DATABASES = {
-    'default': dj_database_url.config(default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+    'default': dj_database_url.config(
+        default=os.environ.get(
+            'DATABASE_URL',
+            'postgresql://basededatoslanube_user:r4wqFxbqpgGkKUQ9H9t84MDKxRYbmr1v@dpg-d5c5d9muk2gs73fnrb0g-a/basededatoslanube'
+        )
+    )
 }
 
 
