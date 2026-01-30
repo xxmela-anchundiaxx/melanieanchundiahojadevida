@@ -23,6 +23,8 @@ services:
         value: "melanieanchundiahojadevida.onrender.com"    # dominio del servicio en Render
       - key: CLOUDINARY_URL
         value: ""    # Opcional: cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+      - key: AUTO_MIGRATE_ON_STARTUP
+        value: "0"    # Set to "1" in Render dashboard to run migrations at process startup (opt-in)
 
 # Crear una base de datos PostgreSQL gestionada por Render
 databases:
