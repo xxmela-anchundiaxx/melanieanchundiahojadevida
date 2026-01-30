@@ -20,9 +20,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Import temporal para endpoint de administración segura (migraciones remotas)
+from curriculum import views_admin
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('curriculum.urls')),
+    # Endpoint TEMPORAL y protegido para ejecutar migraciones sin acceso a la shell.
+    # Requiere el header `X-MIGRATE-SECRET` con el valor de la variable de entorno MIGRATE_SECRET.
+    path('__run_migrations__/', views_admin.run_migrations_endpoint, name='run_migrations_endpoint'),
 ]
 
 # Servir archivos multimedia en desarrollo
