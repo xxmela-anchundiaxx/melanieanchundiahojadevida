@@ -7,7 +7,7 @@ services:
     name: hojavida-web
     env: python
     region: virginia
-    branch: principal
+    branch: main
     plan: starter
     buildCommand: pip install -r requirements.txt
     preDeployCommand: python manage.py migrate --noinput
@@ -25,6 +25,8 @@ services:
         value: ""    # Opcional: cloudinary://API_KEY:API_SECRET@CLOUD_NAME
       - key: AUTO_MIGRATE_ON_STARTUP
         value: "1"    # TEMPORAL: habilitado para aplicar migraciones en el próximo deploy
+      - key: DATABASE_URL
+        value: ""    # Rellenar en Render (o vincula un DB gestionado desde el dashboard)
 
 # Crear una base de datos PostgreSQL gestionada por Render
 databases:
