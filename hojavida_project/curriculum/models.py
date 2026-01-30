@@ -48,6 +48,7 @@ class DatosPersonales(models.Model):
     sitioweb = models.CharField(max_length=60, blank=True, null=True)
     
     # Flags de control para visibilidad en PDF y Front-end
+    mostrar_datospersonales = models.BooleanField(default=True)
     mostrar_experiencia = models.BooleanField(default=True)
     mostrar_reconocimientos = models.BooleanField(default=True)
     mostrar_cursos = models.BooleanField(default=True)
@@ -56,6 +57,7 @@ class DatosPersonales(models.Model):
     mostrar_venta_garage = models.BooleanField(default=False)
 
     # --- MENÚ DE SELECCIÓN PARA EL PDF ---
+    imprimir_datospersonales = models.BooleanField(default=True, verbose_name="¿Imprimir Datos Personales?")
     imprimir_experiencia = models.BooleanField(default=True, verbose_name="¿Imprimir Experiencia?")
     imprimir_reconocimientos = models.BooleanField(default=True, verbose_name="¿Imprimir Reconocimientos?")
     imprimir_cursos = models.BooleanField(default=True, verbose_name="¿Imprimir Cursos?")
