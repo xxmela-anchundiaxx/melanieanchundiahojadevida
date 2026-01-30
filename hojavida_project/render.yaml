@@ -1,0 +1,41 @@
+# Render YAML para desplegar el proyecto en Render
+# - Ajusta los valores (SECRET_KEY, CLOUDINARY_URL, branch, plan) según tu cuenta
+# - Sube este archivo al repo y Render usará esta configuración automáticamente
+
+services:
+  - type: web
+    name: hojavida-web
+    env: python
+    region: virginia
+    branch: principal
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn hojavida_project.wsgi:application --bind 0.0.0.0:$PORT
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        value: ""    # Rellenar en Render Dashboard (no subir claves sensibles en el repo)
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"    # Reemplazar por tu dominio render (recomendado)
+      - key: CLOUDINARY_URL
+        value: ""    # Opcional: cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+
+# Crear una base de datos PostgreSQL gestionada por Render
+databases:
+  - name: hojavida-db
+    plan: starter
+    engine: postgresql
+    region: virginia
+
+# Opcional: jobs o cron jobs pueden añadirse aquí si los necesitas
+# jobs:
+#   - name: migrate
+#     type: "job"
+#     branch: principal
+#     command: "python manage.py migrate"
+#     envVars:
+#       - key: DATABASE_URL
+#         value: ""
